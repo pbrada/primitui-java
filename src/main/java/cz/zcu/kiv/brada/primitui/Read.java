@@ -1,7 +1,7 @@
 package cz.zcu.kiv.brada.primitui;
 
 /**
- * Static utility class for input operations.
+ * Static utility class for console input operations.
  */
 public class Read {
     
@@ -9,28 +9,27 @@ public class Read {
     
     /**
      * Prompt for text input.
-     * Accepts any non-empty text, re-prompts on empty input.
+     * Accepts any text, incl. empty string. Uses default prompt.
      * 
-     * @param prompt the prompt text
-     * @return the entered text (trimmed)
+     * @return the entered text
      */
     public static String text() {
         return text("");
     }
 
     /**
-     * Prompt for text input.
-     * Accepts any non-empty text, re-prompts on empty input.
+     * Prompt for text input, using the provided prompt text.
+     * Accepts any text, incl. empty string.
      * 
      * @param prompt the prompt text
-     * @return the entered text (trimmed)
+     * @return the entered text
      */
     public static String text(String prompt) {
         return text(prompt, 0, -1); // Default: min length 1, no max length
     }
     
     /**
-     * Prompt for text input with length constraints.
+     * Prompt for text input with length constraints, using the provided prompt text.
      * 
      * Validates length and re-prompts on error with appropriate message.
      * 
@@ -57,127 +56,29 @@ public class Read {
 
     }
     
-    // /**
-    //  * Prompt for text input with custom validation.
-    //  * 
-    //  * @param prompt the prompt text
-    //  * @param validator a lambda/function that returns null if valid, 
-    //  *                  or an error message if invalid
-    //  * @return the entered text (trimmed)
-    //  */
-    // public static String text(String prompt, java.util.function.Function<String, String> validator) {
-    //     // Calls validator(input). If null/empty, accept.
-    //     // Otherwise display the error message and re-prompt.
-    // }
-    
-    // /**
-    //  * Prompt for text input with length AND custom validation.
-    //  * 
-    //  * @param prompt the prompt text
-    //  * @param minLength minimum allowed length
-    //  * @param maxLength maximum allowed length
-    //  * @param validator custom validator
-    //  * @return the entered text (trimmed)
-    //  */
-    // public static String text(String prompt, int minLength, int maxLength, 
-    //                           java.util.function.Function<String, String> validator) {
-    //     // Validates length first, then custom validator
-    // }
+
+    // ===== PASSWORD-LIKE INPUT =====
     
 
-        // ===== PASSWORD INPUT =====
-    
     /**
-     * Prompt for password-like input.
-     * Characters are masked with UIConfig.PASSWORD_MASK_CHAR (default: "*")
-     * Error on empty input: UIConfig.ERROR_EMPTY_INPUT.get()
+     * Prompt for password-like input, using a default prompt. 
+     */
+    public static String hidden() {
+        return hidden("");
+    }  
+
+
+    /**
+     * Prompt for password-like input, using the provided text prompt. 
+     * 
+     * If System.console() is available, 
+     * uses readPassword() for masking. Otherwise, falls back to text() without masking 
+     * and shows a warning.
      * 
      * @param prompt the prompt text
      * @return the entered password (trimmed)
      */
     public static String hidden(String prompt) {
-        // Displays: "prompt _"
-        // Shows masked characters as user types (e.g., "****")
-        // Accepts any non-empty text
-        // Re-prompts on empty input with error message
-        return hidden(prompt, "*");
-    }
-    
-    // /**
-    //  * Prompt for password input with length constraints.
-    //  * Characters are masked with UIConfig.PASSWORD_MASK_CHAR (default: "*")
-    //  * Error messages from UIConfig: ERROR_LENGTH_VIOLATION, ERROR_MIN_LENGTH, ERROR_MAX_LENGTH
-    //  * 
-    //  * @param prompt the prompt text
-    //  * @param minLength minimum allowed length (0 for no minimum)
-    //  * @param maxLength maximum allowed length (-1 for no maximum)
-    //  * @return the entered password (trimmed)
-    //  */
-    // public static String password(String prompt, int minLength, int maxLength) {
-    //     // Validates length and re-prompts on error with appropriate message
-    //     // Shows masked characters as user types
-    // }
-    
-    // /**
-    //  * Prompt for password input with custom validation.
-    //  * Characters are masked with UIConfig.PASSWORD_MASK_CHAR (default: "*")
-    //  * The validator should return an error message if invalid, or null/empty string if valid.
-    //  * 
-    //  * @param prompt the prompt text
-    //  * @param validator a lambda/function that returns null if valid, 
-    //  *                  or an error message if invalid
-    //  * @return the entered password (trimmed)
-    //  */
-    // public static String password(String prompt, java.util.function.Function<String, String> validator) {
-    //     // Calls validator(input). If null/empty, accept.
-    //     // Otherwise display the error message and re-prompt.
-    //     // Shows masked characters as user types
-    // }
-    
-    // /**
-    //  * Prompt for password input with length AND custom validation.
-    //  * Characters are masked with UIConfig.PASSWORD_MASK_CHAR (default: "*")
-    //  * Validates length first, then custom validator.
-    //  * 
-    //  * @param prompt the prompt text
-    //  * @param minLength minimum allowed length
-    //  * @param maxLength maximum allowed length
-    //  * @param validator custom validator
-    //  * @return the entered password (trimmed)
-    //  */
-    // public static String password(String prompt, int minLength, int maxLength, 
-    //                               java.util.function.Function<String, String> validator) {
-        
-    //     String input = readPassword("*");
-
-    //     // TODO: Validates length first, then custom validator
-        
-    //     return input;
-    // }
-    
-    // /**
-    //  * Prompt for password input with custom mask character.
-    //  * 
-    //  * @param prompt the prompt text
-    //  * @param maskChar the character to display instead of actual input (e.g., "*", "●", "•")
-    //  * @return the entered password (trimmed)
-    //  */
-    // public static String password(String prompt, String maskChar) {
-    //     // Displays: "prompt _"
-    //     // Shows maskChar for each typed character
-    //     // Accepts any non-empty text
-    //     // Re-prompts on empty input with error message
-    // }
-    
- 
-    /**
-     * Read password with visual masking.
-     * Tries System.console().readPassword() first (best option).
-     * Falls back to manual character-by-character reading.
-     */
-    public static String hidden(String prompt, String maskChar) {
-
-        // TODO maskChar is ignored 
 
         java.io.Console console = System.console();
         
@@ -197,8 +98,18 @@ public class Read {
 
     // ===== NUMBER INPUT =====
     
+
     /**
-     * Prompt for integer input.
+     * Prompt for integer input, using the default prompt.
+     * 
+     * @return the entered integer
+     */    
+    public static int num() {
+        return num("", Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Prompt for integer input, using the provided text prompt.
      * 
      * @param prompt the prompt text
      * @return the entered integer
@@ -211,7 +122,8 @@ public class Read {
     }
     
     /**
-     * Prompt for integer with range validation.
+     * Prompt for integer with range validation.  Re-prompts on invalid input 
+     * or out-of-range value.
      * 
      * @param prompt the prompt text
      * @param min minimum allowed value (inclusive)
@@ -219,8 +131,6 @@ public class Read {
      * @return the entered integer
      */
     public static int num(String prompt, int min, int max) {
-        // Validates range and re-prompts on error
-        // Error message: "Please enter a number between X and Y."
         String input = text(prompt);
         int result;
         try {
@@ -237,8 +147,18 @@ public class Read {
         return result;
     }
     
+
     /**
-     * Prompt for double input.
+     * Prompt for double input, using a default prompt.
+     * 
+     * @return the entered double
+     */
+    public static double real() {
+        return real("", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+    }
+
+    /**
+     * Prompt for double input, using the provided text prompt.
      * 
      * @param prompt the prompt text
      * @return the entered double
@@ -250,7 +170,8 @@ public class Read {
     }
     
     /**
-     * Prompt for double with range validation.
+     * Prompt for double with range validation. Re-prompts on invalid input 
+     * or out-of-range value.
      * 
      * @param prompt the prompt text
      * @param min minimum allowed value (inclusive)
@@ -277,15 +198,26 @@ public class Read {
     // ===== BOOLEAN INPUT =====
     
     /**
-     * Prompt for yes/no input.
-     * Accepts: yes/y/true/1/on or no/n/false/0/off (case-insensitive)
+     * Prompt for yes/no input, using a default prompt.
+     * Accepts: yes/y/true/1/on or no/n/false/0/off (case-insensitive).  
+     * Re-prompts on invalid input.
+     * 
+     * @param prompt the prompt text
+     * @return true if user entered yes/y/true/1/on, false otherwise
+     */
+    public static boolean confirm() {
+        return confirm("");
+    }
+
+    /**
+     * Prompt for yes/no input, using the provided text prompt.
+     * Accepts: yes/y/true/1/on or no/n/false/0/off (case-insensitive).  
+     * Re-prompts on invalid input.
      * 
      * @param prompt the prompt text
      * @return true if user entered yes/y/true/1/on, false otherwise
      */
     public static boolean confirm(String prompt) {
-        // Displays: "prompt (y/n) _"
-        // Re-prompts on invalid input
         String input = text(prompt + " (y/n) ");
         switch (input.toLowerCase()) {
             case "y":

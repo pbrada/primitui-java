@@ -49,7 +49,7 @@ The _PrimiTUI_ comes from _Primit_-ive _TUI_ (not the most clever name but then 
 
 The initial motivation was, that I needed a simple TUI library which students could use in their semester projects, focusing on application functionality and design (rather than getting trapped in overblown libraries and frameworks).  Searching the internet for a couple of days didn't reveal anything useful, to my surprise...  So I gave myself one day of GenAI-assisted coding and `primitui` was born.
 
-The result is actually quite unique in providing an ultra-simple static API -- most existing TUI libraries like [Text-IO](https://github.com/beryx/text-io) are rather heavy for the simple use cases, use builder patterns or require configuration objects.  
+The result is actually quite unique in providing an ultra-simple static API -- most existing TUI libraries like [Text-IO](https://github.com/beryx/text-io) are rather heavy for the simple use cases, use builder patterns or require configuration objects.  The closest similar effort is [java-tui](https://github.com/olivertwistor/java-tui) by Johan Nilsson, but it's too simple and verbose ;-) 
 
 This KISS approach lead to a few design decisions:
 
@@ -147,4 +147,4 @@ Usage examples
 Contributing
 ------------
 
-If you use the library, give credit to the author :-) .  If you have a need to improve, extend or modify, fork and maybe send PRs.  Some ideas for possible future work are in the issues here; but time is scarce and simplicity is desired.
+If you use the library, give credit to the author :-) .  If you have a need to improve, extend or modify, fork and maybe send PRs.  Some ideas for possible future work are in [the issues here](https://github.com/pbrada/primitui-java/issues); but as time is scarce and simplicity is desired, well designed contributions are welcome.

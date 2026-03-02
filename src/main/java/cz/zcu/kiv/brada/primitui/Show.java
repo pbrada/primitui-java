@@ -1,7 +1,7 @@
 package cz.zcu.kiv.brada.primitui;
 
 /**
- * Utility class for writing simple formatted output to the console.
+ * Static utility class for writing simple formatted output to the console.
  *
  * <p>This class provides small helper methods used by the library to print
  * lines, headers, horizontal rules, newlines and formatted strings. All
@@ -12,7 +12,7 @@ public class Show {
     private static final int HEADER_FRAME_LENGTH = 8;
 
     /**
-     * Print the given string to the console without a trailing newline.
+     * Print the given object's string representation to the console without a trailing newline.
      *
      * @param line the text to print (may be an empty string)
      */
@@ -21,7 +21,7 @@ public class Show {
     }
 
     /**
-     * Print the given string to the console followed by a newline.
+     * Print the given object's string representation to the console followed by a newline.
      *
      * @param text the text to print (may be an empty string)
      */
@@ -40,7 +40,7 @@ public class Show {
     }
 
     /**
-     * Print a section header framed with equals signs.
+     * Print a section header framed with equals signs, followed by a newline.
      *
      * @param header the header text to print
      */
@@ -49,9 +49,10 @@ public class Show {
     }
 
     /**
-     * Print a section header framed with equals signs.
+     * Print a section header framed with the given character.
      *
      * @param header the header text to print
+     * @param frameChar the character to use for framing
      */
     public static void header(String header, char frameChar) {
         for (int i = 0; i < HEADER_FRAME_LENGTH; i++) {
@@ -79,7 +80,7 @@ public class Show {
     }
 
     /**
-     * Print the string representation of the parameter to stderr.
+     * Print the string representation of the parameter to stderr, without a trailing newline.
     */
     public static void err(Object msg) {
         System.err.print(msg.toString());

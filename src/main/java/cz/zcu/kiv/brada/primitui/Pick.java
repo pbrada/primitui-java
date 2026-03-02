@@ -16,7 +16,8 @@ public class Pick {
     private static final String PROMPT_CHECK = "> select items (space-separated): ";
 
     /**
-     * A simple interface to displaying a menu and get the user's choice with configurable prompt.
+     * Display a menu composed of provided items' string representations and 
+     * return the user's choice, using configurable prompt.
      * 
      * @param items the menu items to display
      * @return the 0-based index of the selected item
@@ -27,7 +28,7 @@ public class Pick {
     
     
     /**
-     * Display a menu from a list and get the user's choice.
+     * Display a menu from a list and get the user's choice, using a default prompt text.
      * 
      * @param items a List of menu items to display
      * @return the 0-based index of the selected item
@@ -37,7 +38,7 @@ public class Pick {
     }
     
     /**
-     * Display a menu from an array and get the user's choice.
+     * Display a menu from an array and get the user's choice, using a default prompt text.
      * 
      * @param items an array of menu items to display
      * @return the 0-based index of the selected item
@@ -47,7 +48,7 @@ public class Pick {
     }
     
     /**
-     * Display a menu with custom prompt from a list.
+     * Display a menu from a list, with custom prompt.
      * 
      * @param prompt the prompt text
      * @param items a List of menu items
@@ -59,7 +60,7 @@ public class Pick {
     }
     
     /**
-     * Display a menu with custom prompt from an array.
+     * Display a menu from an array, with custom prompt.
      * 
      * @param prompt the prompt text
      * @param items an array of menu items
@@ -71,7 +72,7 @@ public class Pick {
     }
     
     /**
-     * Display a menu with user-defined options from a list.
+     * Display a menu from a list, with user-defined options.
      * 
      * @param items a List of menu items
      * @param options a Map of user-defined options
@@ -119,18 +120,6 @@ public class Pick {
         }
         return choice;
     }
-        
-    // Dropped: LABEL RETURN VARIANTS 
-    // /**
-    //  * Display a menu and return the selected item's label.
-    //  * 
-    //  * @param items the menu items
-    //  * @return the label of the selected item
-    //  */
-    // public static String menuLabel(String prompt, Object... items) {
-    //     // Equivalent to items[menu(items)]
-    // }
-
 
     
     // ===== RADIO BUTTON (SINGLE SELECTION) =====
@@ -217,12 +206,14 @@ public class Pick {
     }
     
     /**
-     * Display a radio button list with initial selection from an array.
+     * Display a radio button list with initial selection.  Entering the choice character 
+     * selects the corresponding option and returns its index.  Entering '0' signals no 
+     * selection and returns -1.
      * 
-     * @param prompt the prompt text
-     * @param initialSelection 0-based index of initially selected option
      * @param options an array of available options
-     * @return the 0-based index of the selected option
+     * @param initialSelection 0-based index of the initially selected option
+     * @param config the configuration map containing prompt and other settings
+     * @return the 0-based index of the selected option, or -1 if no selection is made
      */
     private static int radio(Iterable<?> options, int initialSelection, Map<String,Object> config) {
         if (config == null) {  // Avoid null pointer if config is not provided
@@ -239,8 +230,8 @@ public class Pick {
         int numItems = i;
         String prompt = config.containsKey("prompt") ? (String) config.get("prompt") : PROMPT_RADIO;
         // Get user choice
-        int choice = Read.num(prompt, 1, numItems);
-        if (choice < 1 || choice > numItems) {
+        int choice = Read.num(prompt, 0, numItems);
+        if (choice < 0 || choice > numItems) {
             // Invalid choice, re-prompt
             System.out.println("Invalid choice. Please try again.");
             return radio(options, initialSelection, config);
@@ -287,7 +278,14 @@ public class Pick {
     }
 
     /**
-     * Display a checkbox list (multiple selection) from a list.
+     * Display a checkbox list with an initial selection.  Entering the space-separated choice 
+     * characters (e.g. "1 3 4") selects the corresponding options and returns their indices. 
+     * Entering '0' signals no selection and returns -1.
+     * 
+     * @param options an array of available options
+     * @param initialSelection 0-based index of the initially selected option
+     * @param config the configuration map containing prompt and other settings
+     * @return the 0-based indices of the selected options, or -1 if no selection is made
      * 
      * @param prompt the prompt text
      * @param options a List of available options
@@ -318,9 +316,12 @@ public class Pick {
                 int choice = Integer.parseInt(choiceStr);
                 if (choice >= 1 && choice <= numItems) {
                     finalSelection.add(choice - 1);
+                } 
+                else if (choice == 0) {
+                    return List.of(-1);  // Return -1 to indicate no selection
                 } else {
                     numErrors++;
-                    System.err.println("Invalid choice: " + choiceStr);
+                    System.err.println("Choice out of range: " + choice);
                 }
             } catch (NumberFormatException e) {
                 numErrors++;

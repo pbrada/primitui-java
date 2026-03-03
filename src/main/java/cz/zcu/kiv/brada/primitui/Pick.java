@@ -2,6 +2,7 @@
 package cz.zcu.kiv.brada.primitui;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Arrays;
 
@@ -349,7 +350,7 @@ public class Pick {
      * @return a list of 0-based indices of selected options
      */
     public static int[] check(Object[] options, int[] initialSelection, String prompt) {
-        List<Integer> result = check(Arrays.asList(options), Arrays.stream(initialSelection).boxed().toList(), prompt);
+        List<Integer> result = check(Arrays.asList(options), Arrays.stream(initialSelection).boxed().collect(Collectors.toList()), prompt);
         return result.stream().mapToInt(Integer::intValue).toArray();   // https://stackoverflow.com/a/23945015/261891
     }
     

@@ -5,30 +5,15 @@ package cz.zcu.kiv.brada.primitui;
  */
 public class Read {
     
+    // Default prompts
+    private static final String PROMPT_TEXT = ""; 
+    private static final String PROMPT_HIDDEN = ""; 
+    private static final String PROMPT_NUMERIC = ""; 
+    private static final String PROMPT_YN = "y/n: "; 
+
     // ===== TEXT INPUT =====
     
-    /**
-     * Prompt for text input.
-     * Accepts any text, incl. empty string. Uses default prompt.
-     * 
-     * @return the entered text
-     */
-    public static String text() {
-        return text("");
-    }
-
-    /**
-     * Prompt for text input, using the provided prompt text.
-     * Accepts any text, incl. empty string.
-     * 
-     * @param prompt the prompt text
-     * @return the entered text
-     */
-    public static String text(String prompt) {
-        return text(prompt, 0, -1); // Default: min length 1, no max length
-    }
-    
-    /**
+     /**
      * Prompt for text input with length constraints, using the provided prompt text.
      * 
      * Validates length and re-prompts on error with appropriate message.
@@ -56,18 +41,30 @@ public class Read {
 
     }
     
+    /**
+     * Prompt for text input, using the provided prompt text.
+     * Accepts any text, incl. empty string.
+     * 
+     * @param prompt the prompt text
+     * @return the entered text
+     */
+    public static String text(String prompt) {
+        return text(prompt, 0, -1); // Default: min length 1, no max length
+    }
+    
+   /**
+     * Prompt for text input.
+     * Accepts any text, incl. empty string. Uses default prompt.
+     * 
+     * @return the entered text
+     */
+    public static String text() {
+        return text(PROMPT_TEXT, 0, -1); // Default: min length 1, no max length
+    }
+
 
     // ===== PASSWORD-LIKE INPUT =====
     
-
-    /**
-     * Prompt for password-like input, using a default prompt. 
-     */
-    public static String hidden() {
-        return hidden("");
-    }  
-
-
     /**
      * Prompt for password-like input, using the provided text prompt. 
      * 
@@ -94,33 +91,19 @@ public class Read {
         }
         
     }
+
+    /**
+     * Prompt for password-like input, using a default prompt. 
+     */
+    public static String hidden() {
+        return hidden(PROMPT_HIDDEN);
+    }  
+
     
 
     // ===== NUMBER INPUT =====
     
 
-    /**
-     * Prompt for integer input, using the default prompt.
-     * 
-     * @return the entered integer
-     */    
-    public static int num() {
-        return num("", Integer.MIN_VALUE, Integer.MAX_VALUE);
-    }
-
-    /**
-     * Prompt for integer input, using the provided text prompt.
-     * 
-     * @param prompt the prompt text
-     * @return the entered integer
-     */
-    public static int num(String prompt) {
-        // Displays: "prompt _"
-        // Accepts valid integers only
-        // Re-prompts on invalid input
-        return num(prompt, Integer.MIN_VALUE, Integer.MAX_VALUE);
-    }
-    
     /**
      * Prompt for integer with range validation.  Re-prompts on invalid input 
      * or out-of-range value.
@@ -147,29 +130,30 @@ public class Read {
         return result;
     }
     
-
     /**
-     * Prompt for double input, using a default prompt.
-     * 
-     * @return the entered double
-     */
-    public static double real() {
-        return real("", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-    }
-
-    /**
-     * Prompt for double input, using the provided text prompt.
+     * Prompt for integer input, using the provided text prompt.
      * 
      * @param prompt the prompt text
-     * @return the entered double
+     * @return the entered integer
      */
-    public static double real(String prompt) {
+    public static int num(String prompt) {
         // Displays: "prompt _"
-        // Accepts valid doubles
-        return real(prompt, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+        // Accepts valid integers only
+        // Re-prompts on invalid input
+        return num(prompt, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
     
     /**
+     * Prompt for integer input, using the default prompt.
+     * 
+     * @return the entered integer
+     */    
+    public static int num() {
+        return num(PROMPT_NUMERIC, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+
+   /**
      * Prompt for double with range validation. Re-prompts on invalid input 
      * or out-of-range value.
      * 
@@ -194,21 +178,31 @@ public class Read {
         }
         return result;
     }
-    
-    // ===== BOOLEAN INPUT =====
-    
-    /**
-     * Prompt for yes/no input, using a default prompt.
-     * Accepts: yes/y/true/1/on or no/n/false/0/off (case-insensitive).  
-     * Re-prompts on invalid input.
+
+     /**
+     * Prompt for double input, using the provided text prompt.
      * 
      * @param prompt the prompt text
-     * @return true if user entered yes/y/true/1/on, false otherwise
+     * @return the entered double
      */
-    public static boolean confirm() {
-        return confirm("");
+    public static double real(String prompt) {
+        // Displays: "prompt _"
+        // Accepts valid doubles
+        return real(prompt, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+    }
+    
+    /**
+     * Prompt for double input, using a default prompt.
+     * 
+     * @return the entered double
+     */
+    public static double real() {
+        return real(PROMPT_NUMERIC, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
+   
+    // ===== BOOLEAN INPUT =====
+    
     /**
      * Prompt for yes/no input, using the provided text prompt.
      * Accepts: yes/y/true/1/on or no/n/false/0/off (case-insensitive).  
@@ -218,7 +212,7 @@ public class Read {
      * @return true if user entered yes/y/true/1/on, false otherwise
      */
     public static boolean confirm(String prompt) {
-        String input = text(prompt + " (y/n) ");
+        String input = text(prompt);
         switch (input.toLowerCase()) {
             case "y":
             case "yes":
@@ -237,5 +231,18 @@ public class Read {
                 return confirm(prompt); // Recursively re-prompt
         }
     }
-    
+
+    /**
+     * Prompt for yes/no input, using a default prompt.
+     * Accepts: yes/y/true/1/on or no/n/false/0/off (case-insensitive).  
+     * Re-prompts on invalid input.
+     * 
+     * @param prompt the prompt text
+     * @return true if user entered yes/y/true/1/on, false otherwise
+     */
+    public static boolean confirm() {
+        return confirm(PROMPT_YN);
+    }
+
+
 }

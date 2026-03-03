@@ -32,7 +32,7 @@ Length/value constraints can be provided for text and numerical input.
 
 Shortcut methods to cater for simple common cases:
 
-* Printing anything via `toString()` to _stdout_
+* Printing any object as text, via `toString()` to _stdout_
 * Formatted text: `textf(String fmt, Object args...)`
 * Simple headings, dividers and "clean console"
 * Error message through `toString()` to _stderr_

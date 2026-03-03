@@ -13,7 +13,7 @@ public class Pick {
     // ===== BASIC MENU =====
 
     private static final String PROMPT_MENU = "> select: ";
-    private static final String CHAR_MENU_START = '1';
+    private static final int MENU_START = 1;
     private static final String PROMPT_RADIO = "> select item: ";
     private static final String PROMPT_CHECK = "> select items (space-separated): ";
 
@@ -38,19 +38,18 @@ public class Pick {
             config = Map.of();
         }
         // Get list enum character
-        char enumChar = config.containsKey("start") ? (char) config.get("start") : CHAR_MENU_START;
+        int choiceStart = config.containsKey("start") ? (char) config.get("start") : MENU_START;
         // Display menu items
         int i = 0;
         for (Object item : items) {
-            System.out.print((char)(enumChar + i));
+            System.out.print(choiceStart + i);
             System.out.println(". " + item);
             i++;
         }
         int numItems = i ;
         String prompt = config.containsKey("prompt") ? (String) config.get("prompt") : PROMPT_MENU;
         // Get user choice
-        String choiceChar = Read.text(prompt);
-        int choice = choiceChar.charAt(0) - enumChar;
+        int choice = Read.num(prompt) - choiceStart;
         if (choice < 0 || choice >= numItems) {
             // Invalid choice, re-prompt
             System.out.println("Invalid choice. Please try again.");
@@ -350,7 +349,8 @@ public class Pick {
      * @return a list of 0-based indices of selected options
      */
     public static int[] check(Object[] options, int[] initialSelection, String prompt) {
-        return check(Arrays.asList(options), Arrays.stream(initialSelection).boxed().toList(), prompt);
+        List<Integer> result = check(Arrays.asList(options), Arrays.stream(initialSelection).boxed().toList(), prompt);
+        return result.stream().mapToInt(Integer::intValue).toArray();   // https://stackoverflow.com/a/23945015/261891
     }
     
     /**
@@ -361,7 +361,7 @@ public class Pick {
      * @return a list of 0-based indices of selected options
      */
     public static int[] check(Object[] options, int[] initialSelection) {
-        return check(Arrays.asList(options), Arrays.stream(initialSelection).boxed().toList(), PROMPT_CHECK);
+        return check(options, initialSelection, PROMPT_CHECK);
     }
     
     /**
@@ -372,7 +372,7 @@ public class Pick {
      * @return a list of 0-based indices of selected options
      */
     public static int[] check(Object[] options) {
-        return check(Arrays.asList(options), List.of(), PROMPT_CHECK);
+        return check(options, new int[0], PROMPT_CHECK);
     }
     
     

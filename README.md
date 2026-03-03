@@ -72,49 +72,50 @@ Usage examples
     );
 
     public static void main(String[] args) {
-
-        java.util.List<Object> options;
-
         Show.clear();
         Show.header("Welcome to the TUI library demo!");
 
-        java.util.List<Object> menu = java.util.Arrays.asList("Radio", 
+        java.util.List<String> menuItems = java.util.Arrays.asList("Radio", 
             "Checkboxes", "Input reading", "Menu from objects", 
             "Silly you", "END");
         int choice = -1;
 
-        while (choice != menu.size() - 1) {  // Loop until "END" is selected
+        while (choice != menuItems.size() - 1) {  // Loop until "END" is selected
 
             Show.nl();
             Show.header("menu",'-');
-            choice = Pick.menu(menu);
-            System.out.println("You selected option " + (choice + 1));
+            choice = Pick.menu(menuItems);
+            Show.textln("You selected option " + (choice + 1));
             Show.hr();
 
             switch (choice) {
                 case 0:
                     Show.header("radio",'-');
-                    options = java.util.Arrays.asList("Option A", "Option B", "Option C");
-                    int radioChoice = Pick.radio(options, 2);
+                    // varags-based radio buttons
+                    int radioChoice = Pick.radio("Pick one: ", "Option A", "Option B", "Option C" );
                     Show.text("You switched to option " + (char)('A' + radioChoice));              
                     break;
                 
                 case 1:
                     Show.header("checkboxes",'-');
                     String[] checkArray = {"Value A", "Value B", "Value C", "Value D", "Value E"};
-                    int[] defaultValues = {0, 2}; // Default selected values
-                    java.util.List<Integer> checkboxes = Pick.check(checkArray, defaultValues, "Select some: ");
-                    Show.text("You selected options with indexes " + checkboxes);
+                    int[] selectedValues = {0, 2}; // Default selected values
+                    // checkboxes with preselected values from a list of strings, with custom prompt
+                    int[] checkboxes = Pick.check(checkArray, selectedValues, "Select some: ");
+                    Show.text("You selected options with indexes " + java.util.Arrays.toString(checkboxes));
                     break;
 
                 case 2:
+                    // various input methods
                     Show.header("input reading",'-');
                     String name = Read.text("Enter your name: ");
                     int age = Read.num("Enter your age: ", 0, 120);
-                    double salary = Read.real("Enter your salary: ", 0, Double.MAX_VALUE);
+                    Show.text("Enter your salary: ");
+                    double salary = Read.real();
                     String password = Read.hidden("Enter your password: ");
                     String country = Read.text("Enter your 2-letter country code: ", 2, 2); 
                     
+                    Show.textln("=> provided information:");
                     Show.textln("Name: " + name);
                     Show.textf("Age: %d\n", age);
                     Show.text("Salary: "); Show.text(salary); Show.nl();
@@ -124,11 +125,19 @@ Usage examples
 
                 case 3:
                     Show.header("Menu from list of objects",'-');
+                    // menu from non-string objects, with default prompt
                     int personChoice = Pick.menu(people);
                     Show.textln("You selected: " + people.get(personChoice));
                     break;
 
                 case 5:
+                    boolean confirm = Read.confirm("Are you sure you want to exit? ");
+                    if (confirm) {
+                        choice = menuItems.size() - 1; // Set to "END" index to exit
+                    } else {
+                        choice = -1; // Reset choice to stay in the menu
+                        Show.textln("Exit cancelled.");
+                    }
                     break;
 
                 default:
@@ -138,10 +147,54 @@ Usage examples
         }
         
         Show.header("Goodbye!");
-        
-    }    
+    }
 
 ```
+
+This produces e.g. the following conversation (abbreviated):
+
+    === Welcome to the TUI library demo! ===
+
+    -------- menu --------
+    1. Radio
+    2. Checkboxes
+    3. Input reading
+    4. Menu from objects
+    5. Silly you
+    6. END
+    > select: 1
+    You selected option 1
+    --------------------------------------------------
+    -------- radio --------
+    1. ( ) Option A
+    2. ( ) Option B
+    3. ( ) Option C
+    Pick one: 1
+    You switched to option A
+    -------- menu --------
+    (...)
+    -------- input reading --------
+    Enter your name: Joe Doe
+    Enter your age: 13
+    Enter your salary: 1E6
+    Enter your password: 
+    Enter your 2-letter country code: err
+    Input must be between 2 and 2 characters.
+    Enter your 2-letter country code: ER
+    Name: Joe Doe
+    Age: 13
+    Salary: 1000000.0
+    Password: ***
+    Country: ER
+
+    -------- menu --------
+    (...)
+    You selected option 6
+    --------------------------------------------------
+    Are you sure you want to exit? q
+    Please enter 'y' for yes or 'n' for no.
+    Are you sure you want to exit? y
+    === Goodbye! ===
 
 
 Contributing

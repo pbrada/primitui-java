@@ -10,6 +10,10 @@ import java.util.Arrays;
  * Static utility class for menu operations.
  */
 public class Pick {
+
+    private Pick() {
+        // Private empty constructor to prevent instantiation
+    }
     
     // ===== BASIC MENU =====
 
@@ -64,6 +68,7 @@ public class Pick {
      * return the user's choice, using varargs and configurable prompt.
      * 
      * @param items the menu items to display
+     * @param prompt the prompt text
      * @return the 0-based index of the selected item
      */
     public static int menu(String prompt, Object... items) {
@@ -177,9 +182,8 @@ public class Pick {
     /**
      * Display a radio button list with initial selection from a list.
      * 
-     * @param prompt the prompt text
+     * @param options a list of available options
      * @param initialSelection 0-based index of initially selected option
-     * @param options a List of available options
      * @return the 0-based index of the selected option
      */
     public static int radio(Iterable<?> options, int initialSelection) {
@@ -189,8 +193,7 @@ public class Pick {
     /**
      * Display a radio button list from a list, no initial selection.
      * 
-     * @param prompt the prompt text
-     * @param options a List of available options
+     * @param options a list of available options
      * @return the 0-based index of the selected option
      */
     public static int radio(Iterable<?> options) {
@@ -212,9 +215,8 @@ public class Pick {
     /**
      * Display a radio button list with initial selection from an array.
      * 
-     * @param prompt the prompt text
-     * @param initialSelection 0-based index of initially selected option
      * @param options an array of available options
+     * @param initialSelection 0-based index of initially selected option
      * @return the 0-based index of the selected option
      */
     public static int radio(Object[] options, int initialSelection) {
@@ -223,8 +225,7 @@ public class Pick {
      /**
      * Display a radio button list from an array, no initial selection.
      * 
-     * @param prompt the prompt text
-     * @param options an array of available options
+     * @param options an array of available options to select from
      * @return the 0-based index of the selected option
      */
     public static int radio(Object[] options) {
@@ -244,11 +245,7 @@ public class Pick {
      * @param options an array of available options
      * @param initialSelection 0-based index of the initially selected option
      * @param config the configuration map containing prompt and other settings
-     * @return the 0-based indices of the selected options, or -1 if no selection is made
-     * 
-     * @param prompt the prompt text
-     * @param options a List of available options
-     * @return a list of 0-based indices of selected options
+     * @return a list of 0-based indices of the selected options, or -1 if no selection is made
      */
     private static List<Integer> check(Iterable<?> options, List<Integer> initialSelection, Map<String,Object> config) {
         if (config == null) {  // Avoid null pointer if config is not provided
@@ -313,7 +310,8 @@ public class Pick {
      * Display a checkbox list (multiple selection) from a list, using custom prompt.
      * 
      * @param prompt the prompt text
-     * @param options a List of available options
+     * @param initialSelection 0-based indices of initially selected options
+     * @param options a list of available options
      * @return a list of 0-based indices of selected options
      */
     public static List<Integer> check(Iterable<?> options, List<Integer> initialSelection, String prompt) {
@@ -323,8 +321,8 @@ public class Pick {
     /**
      * Display a checkbox list (multiple selection) from a list, using default prompt.
      * 
-     * @param prompt the prompt text
-     * @param options a List of available options
+     * @param options a list of available options
+     * @param initialSelection 0-based indices of initially selected options
      * @return a list of 0-based indices of selected options
      */
     public static List<Integer> check(Iterable<?> options, List<Integer> initialSelection) {
@@ -334,8 +332,7 @@ public class Pick {
     /**
      * Display a checkbox list (multiple selection) from a list, using no initial selection and default prompt.
      * 
-     * @param prompt the prompt text
-     * @param options a List of available options
+     * @param options a list of available options
      * @return a list of 0-based indices of selected options
      */
     public static List<Integer> check(Iterable<?> options) {
@@ -347,6 +344,7 @@ public class Pick {
      * 
      * @param prompt the prompt text
      * @param options an array of available options
+     * @param initialSelection 0-based indices of initially selected options
      * @return a list of 0-based indices of selected options
      */
     public static int[] check(Object[] options, int[] initialSelection, String prompt) {
@@ -357,8 +355,8 @@ public class Pick {
     /**
      * The array-based version of check, using default prompt text.
      * 
-     * @param prompt the prompt text
      * @param options an array of available options
+     * @param initialSelection 0-based indices of initially selected options
      * @return a list of 0-based indices of selected options
      */
     public static int[] check(Object[] options, int[] initialSelection) {
@@ -368,7 +366,6 @@ public class Pick {
     /**
      * The array-based version of check, using no initial selection and default prompt text.
      * 
-     * @param prompt the prompt text
      * @param options an array of available options
      * @return a list of 0-based indices of selected options
      */

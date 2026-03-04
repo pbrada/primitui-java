@@ -9,12 +9,16 @@ package cz.zcu.kiv.brada.primitui;
  */
 public class Show {
 
+    private Show() {
+        // Private empty constructor to prevent instantiation
+    }
+
     private static final int HEADER_FRAME_LENGTH = 8;
 
     /**
      * Print the given object's string representation to the console without a trailing newline.
      *
-     * @param line the text to print (may be an empty string)
+     * @param text the object for which `toString()` is called to print (may be an empty string)
      */
     public static void text(Object text) {
         System.out.print(text.toString());
@@ -23,17 +27,17 @@ public class Show {
     /**
      * Print the given object's string representation to the console followed by a newline.
      *
-     * @param text the text to print (may be an empty string)
+     * @param text the object for which `toString()` is called to print (may be an empty string)
      */
     public static void textln(Object text) {
         System.out.println(text.toString());
     }
 
     /**
-     * Print a formatted string to the console using {@link System#out#printf}.
+     * Print a formatted string to the console using {@code System.out.printf()}.
      *
-     * @param text  the format string (see {@link java.util.Formatter})
-     * @param args  format arguments referenced by the format specifiers in {@code text}
+     * @param fmt  the format string (see {@link java.util.Formatter})
+     * @param args  format arguments referenced by the format specifiers in {@code fmt}
      */
     public static void textf(String fmt, Object... args) {
         System.out.printf(fmt, args);
@@ -81,6 +85,8 @@ public class Show {
 
     /**
      * Print the string representation of the parameter to stderr, without a trailing newline.
+     * 
+     * @param msg the object for which `toString()` is called to print (may be an empty string)
     */
     public static void err(Object msg) {
         System.err.print(msg.toString());
@@ -88,6 +94,8 @@ public class Show {
     
     /**
      * Print the string representation of the parameter to stderr, adding a newline.
+     * 
+     * @param msg the object for which `toString()` is called to print (may be an empty string)
     */
     public static void errln(Object msg) {
         System.err.println(msg.toString());

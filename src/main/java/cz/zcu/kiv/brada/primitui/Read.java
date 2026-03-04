@@ -4,6 +4,10 @@ package cz.zcu.kiv.brada.primitui;
  * Static utility class for console input operations.
  */
 public class Read {
+
+    private Read() {
+        // Private empty constructor to prevent instantiation
+    }
     
     // Default prompts
     private static final String PROMPT_TEXT = ""; 
@@ -73,7 +77,7 @@ public class Read {
      * and shows a warning.
      * 
      * @param prompt the prompt text
-     * @return the entered password (trimmed)
+     * @return the entered password (not trimmed)
      */
     public static String hidden(String prompt) {
 
@@ -94,6 +98,8 @@ public class Read {
 
     /**
      * Prompt for password-like input, using a default prompt. 
+     * 
+     * @return the entered password
      */
     public static String hidden() {
         return hidden(PROMPT_HIDDEN);
@@ -237,7 +243,6 @@ public class Read {
      * Accepts: yes/y/true/1/on or no/n/false/0/off (case-insensitive).  
      * Re-prompts on invalid input.
      * 
-     * @param prompt the prompt text
      * @return true if user entered yes/y/true/1/on, false otherwise
      */
     public static boolean confirm() {
